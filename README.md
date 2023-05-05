@@ -49,11 +49,11 @@ Ensure that you have the following permissions added
 
 <docgen-index>
 
-- [`hasEvent(...)`](#hasevent)
-- [`addEvent(...)`](#addevent)
-- [`updateEvent(...)`](#updateevent)
-- [`removeEvent(...)`](#removeevent)
-- [Type Aliases](#type-aliases)
+* [`hasEvent(...)`](#hasevent)
+* [`addEvent(...)`](#addevent)
+* [`updateEvent(...)`](#updateevent)
+* [`removeEvent(...)`](#removeevent)
+* [Type Aliases](#type-aliases)
 
 </docgen-index>
 
@@ -74,7 +74,8 @@ Returns true when provided id exists in the calendar
 
 **Returns:** <code>Promise&lt;{ result: boolean; }&gt;</code>
 
----
+--------------------
+
 
 ### addEvent(...)
 
@@ -90,7 +91,8 @@ Open device calendar with pre-fill event using provided information
 
 **Returns:** <code>Promise&lt;{ id: string; }&gt;</code>
 
----
+--------------------
+
 
 ### updateEvent(...)
 
@@ -106,7 +108,8 @@ Updates event with provided data by an id
 
 **Returns:** <code>Promise&lt;{ id: string; }&gt;</code>
 
----
+--------------------
+
 
 ### removeEvent(...)
 
@@ -122,17 +125,21 @@ Removes an event by its id
 
 **Returns:** <code>Promise&lt;{ result: boolean; }&gt;</code>
 
----
+--------------------
+
 
 ### Type Aliases
+
 
 #### CalendarCreateEventOptions
 
 <code><a href="#calendareventoptions">CalendarEventOptions</a> & { title: string; startDate: number; }</code>
 
+
 #### CalendarEventOptions
 
 <code>{ title?: string; startDate?: number; notes?: string; location?: string; endDate?: number; isAllDay?: boolean; }</code>
+
 
 #### CalendarUpdateEventOptions
 

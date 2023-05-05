@@ -1,0 +1,141 @@
+{
+  "api": {
+    "name": "CalendarPlugin",
+    "slug": "calendarplugin",
+    "docs": "",
+    "tags": [],
+    "methods": [
+      {
+        "name": "hasEvent",
+        "signature": "(options: { id: string; }) => Promise<{ result: boolean; }>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "Event options",
+            "type": "{ id: string; }"
+          }
+        ],
+        "returns": "Promise<{ result: boolean; }>",
+        "tags": [
+          {
+            "name": "param",
+            "text": "options Event options"
+          }
+        ],
+        "docs": "Returns true when provided id exists in the calendar",
+        "complexTypes": [],
+        "slug": "hasevent"
+      },
+      {
+        "name": "addEvent",
+        "signature": "(options: CalendarCreateEventOptions) => Promise<{ id: string; }>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "Event information",
+            "type": "CalendarCreateEventOptions"
+          }
+        ],
+        "returns": "Promise<{ id: string; }>",
+        "tags": [
+          {
+            "name": "param",
+            "text": "options Event information"
+          }
+        ],
+        "docs": "Open device calendar with pre-fill event using provided information",
+        "complexTypes": [
+          "CalendarCreateEventOptions"
+        ],
+        "slug": "addevent"
+      },
+      {
+        "name": "updateEvent",
+        "signature": "(options: CalendarUpdateEventOptions) => Promise<{ id: string; }>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "Event information",
+            "type": "CalendarUpdateEventOptions"
+          }
+        ],
+        "returns": "Promise<{ id: string; }>",
+        "tags": [
+          {
+            "name": "param",
+            "text": "options Event information"
+          }
+        ],
+        "docs": "Updates event with provided data by an id",
+        "complexTypes": [
+          "CalendarUpdateEventOptions"
+        ],
+        "slug": "updateevent"
+      },
+      {
+        "name": "removeEvent",
+        "signature": "(options: { id: string; }) => Promise<{ result: boolean; }>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "Event options",
+            "type": "{ id: string; }"
+          }
+        ],
+        "returns": "Promise<{ result: boolean; }>",
+        "tags": [
+          {
+            "name": "param",
+            "text": "options Event options"
+          }
+        ],
+        "docs": "Removes an event by its id",
+        "complexTypes": [],
+        "slug": "removeevent"
+      }
+    ],
+    "properties": []
+  },
+  "interfaces": [],
+  "enums": [],
+  "typeAliases": [
+    {
+      "name": "CalendarCreateEventOptions",
+      "slug": "calendarcreateeventoptions",
+      "docs": "",
+      "types": [
+        {
+          "text": "CalendarEventOptions & {\n  title: string;\n  startDate: number;\n}",
+          "complexTypes": [
+            "CalendarEventOptions"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CalendarEventOptions",
+      "slug": "calendareventoptions",
+      "docs": "",
+      "types": [
+        {
+          "text": "{\n  title?: string;\n  startDate?: number;\n  notes?: string;\n  location?: string;\n  endDate?: number;\n  isAllDay?: boolean;\n}",
+          "complexTypes": []
+        }
+      ]
+    },
+    {
+      "name": "CalendarUpdateEventOptions",
+      "slug": "calendarupdateeventoptions",
+      "docs": "",
+      "types": [
+        {
+          "text": "CalendarEventOptions & {\n  id: string;\n}",
+          "complexTypes": [
+            "CalendarEventOptions"
+          ]
+        }
+      ]
+    }
+  ],
+  "pluginConfigs": []
+}
