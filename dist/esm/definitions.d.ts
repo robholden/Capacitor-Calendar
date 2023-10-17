@@ -9,11 +9,38 @@ export declare type CalendarEventOptions = {
 export declare type CalendarCreateEventOptions = CalendarEventOptions & {
     title: string;
     startDate: number;
+    fullAccess?: boolean;
 };
 export declare type CalendarUpdateEventOptions = CalendarEventOptions & {
     id: string;
 };
+export declare enum CalendarPermissionResult {
+    NotDetermined = 0,
+    Authorized = 1,
+    Restricted = 2,
+    Denied = 3
+}
 export interface CalendarPlugin {
+    /**
+     * Request access to the calendar
+     *
+     * @param options Event options
+     */
+    requestAccess(options: {
+        fullAccess?: boolean;
+    }): Promise<{
+        result: CalendarPermissionResult;
+    }>;
+    /**
+     * Returns access level
+     *
+     * @param options Event options
+     */
+    hasAccess(options: {
+        fullAccess?: boolean;
+    }): Promise<{
+        result: CalendarPermissionResult;
+    }>;
     /**
      * Returns true when provided id exists in the calendar
      *

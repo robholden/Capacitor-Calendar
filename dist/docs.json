@@ -6,6 +6,52 @@
     "tags": [],
     "methods": [
       {
+        "name": "requestAccess",
+        "signature": "(options: { fullAccess?: boolean; }) => Promise<{ result: CalendarPermissionResult; }>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "Event options",
+            "type": "{ fullAccess?: boolean | undefined; }"
+          }
+        ],
+        "returns": "Promise<{ result: CalendarPermissionResult; }>",
+        "tags": [
+          {
+            "name": "param",
+            "text": "options Event options"
+          }
+        ],
+        "docs": "Request access to the calendar",
+        "complexTypes": [
+          "CalendarPermissionResult"
+        ],
+        "slug": "requestaccess"
+      },
+      {
+        "name": "hasAccess",
+        "signature": "(options: { fullAccess?: boolean; }) => Promise<{ result: CalendarPermissionResult; }>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "Event options",
+            "type": "{ fullAccess?: boolean | undefined; }"
+          }
+        ],
+        "returns": "Promise<{ result: CalendarPermissionResult; }>",
+        "tags": [
+          {
+            "name": "param",
+            "text": "options Event options"
+          }
+        ],
+        "docs": "Returns access level",
+        "complexTypes": [
+          "CalendarPermissionResult"
+        ],
+        "slug": "hasaccess"
+      },
+      {
         "name": "hasEvent",
         "signature": "(options: { id: string; }) => Promise<{ result: boolean; }>",
         "parameters": [
@@ -97,7 +143,38 @@
     "properties": []
   },
   "interfaces": [],
-  "enums": [],
+  "enums": [
+    {
+      "name": "CalendarPermissionResult",
+      "slug": "calendarpermissionresult",
+      "members": [
+        {
+          "name": "NotDetermined",
+          "value": "0",
+          "tags": [],
+          "docs": ""
+        },
+        {
+          "name": "Authorized",
+          "value": "1",
+          "tags": [],
+          "docs": ""
+        },
+        {
+          "name": "Restricted",
+          "value": "2",
+          "tags": [],
+          "docs": ""
+        },
+        {
+          "name": "Denied",
+          "value": "3",
+          "tags": [],
+          "docs": ""
+        }
+      ]
+    }
+  ],
   "typeAliases": [
     {
       "name": "CalendarCreateEventOptions",
@@ -105,7 +182,7 @@
       "docs": "",
       "types": [
         {
-          "text": "CalendarEventOptions & {\n  title: string;\n  startDate: number;\n}",
+          "text": "CalendarEventOptions & {\n  title: string;\n  startDate: number;\n  fullAccess?: boolean;\n}",
           "complexTypes": [
             "CalendarEventOptions"
           ]

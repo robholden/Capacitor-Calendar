@@ -11,16 +11,44 @@ import EventKitUI
 public class CalendarPlugin: CAPPlugin, EKEventEditViewDelegate {
     private let store = EKEventStore()
     private var createCall: CAPPluginCall?
-
+    
+    @objc func requestAccess(_ call: CAPPluginCall) {
+        getAccess(call, fullAccess: call.getBool("fullAccess", false)) { granted in
+            self.hasAccess(call)
+        }
+    }
+    
+    @objc func hasAccess(_ call: CAPPluginCall) {
+        let authorizationStatus = EKEventStore.authorizationStatus(for: .event)
+        let fullAccess = call.getBool("fullAccess", false)
+        
+        var result = CalendarPermissionResult.notDetermined
+        switch authorizationStatus {
+        case .restricted:
+            result = .restricted
+        case .denied:
+            result = .denied
+        case .authorized, .fullAccess:
+            result = .authorized
+        case .writeOnly:
+            result = fullAccess ? .denied : .authorized
+        case .notDetermined:
+            result = .notDetermined
+        @unknown default:
+            result = .notDetermined
+        }
+        
+        call.resolve(["result": result.rawValue])
+    }
+    
     @objc func hasEvent(_ call: CAPPluginCall) {
         guard let id = call.getString("id") else {
             call.reject("Id is required")
             return
         }
         
-        store.requestAccess(to: .event) { (accessGranted: Bool, error: Error?) in
-            if !accessGranted || error != nil {
-                call.reject("Access to calendar denied: \(String(describing: error?.localizedDescription))")
+        getAccess(call, fullAccess: true) { granted in
+            if !granted {
                 return
             }
             
@@ -35,12 +63,11 @@ public class CalendarPlugin: CAPPlugin, EKEventEditViewDelegate {
             return
         }
         
-        store.requestAccess(to: .event) { (accessGranted: Bool, error: Error?) in
-            if !accessGranted || error != nil {
-                call.reject("Access to calendar denied: \(String(describing: error?.localizedDescription))")
+        getAccess(call, fullAccess: true) { granted in
+            if !granted {
                 return
             }
-            
+        
             var deleted = true
             if let event = self.store.event(withIdentifier: id) {
                 do {
@@ -77,9 +104,8 @@ public class CalendarPlugin: CAPPlugin, EKEventEditViewDelegate {
             return
         }
         
-        store.requestAccess(to: .event) { (accessGranted: Bool, error: Error?) in
-            if !accessGranted || error != nil {
-                call.reject("Access to calendar denied: \(String(describing: error?.localizedDescription))")
+        getAccess(call, fullAccess: call.getBool("fullAccess", false)) { granted in
+            if !granted {
                 return
             }
             
@@ -117,12 +143,11 @@ public class CalendarPlugin: CAPPlugin, EKEventEditViewDelegate {
             return
         }
         
-        store.requestAccess(to: .event) { (accessGranted: Bool, error: Error?) in
-            if !accessGranted || error != nil {
-                call.reject("Access to calendar denied: \(String(describing: error?.localizedDescription))")
+        getAccess(call, fullAccess: false) { granted in
+            if !granted {
                 return
             }
-            
+        
             guard let event = self.store.event(withIdentifier: id) else {
                 call.reject("Event not found to update")
                 return
@@ -166,5 +191,33 @@ public class CalendarPlugin: CAPPlugin, EKEventEditViewDelegate {
             call.resolve(["id": controller.self.event?.eventIdentifier ?? ""])
         }
         controller.dismiss(animated: true, completion: nil)
+    }
+    
+    private func getAccess(_ call: CAPPluginCall, fullAccess: Bool, action: @escaping ((Bool)->())) -> Void {
+        func handleResult (granted: Bool, error: Error?) -> Void {
+            if !granted || error != nil {
+                call.reject("Access to calendar denied: \(String(describing: error?.localizedDescription))")
+                action(false)
+            } else {
+                action(true)
+            }
+        }
+        
+        if #available(iOS 17.0, *) {
+            if fullAccess {
+                store.requestFullAccessToEvents { accessGranted, error in
+                    handleResult(granted: accessGranted, error: error)
+                }
+            } else {
+                store.requestWriteOnlyAccessToEvents { accessGranted, error in
+                    handleResult(granted: accessGranted, error: error)
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+            store.requestAccess(to: .event) { (accessGranted: Bool, error: Error?) in
+                handleResult(granted: accessGranted, error: error)
+            }
+        }
     }
 }

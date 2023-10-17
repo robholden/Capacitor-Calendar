@@ -49,16 +49,53 @@ Ensure that you have the following permissions added
 
 <docgen-index>
 
+* [`requestAccess(...)`](#requestaccess)
+* [`hasAccess(...)`](#hasaccess)
 * [`hasEvent(...)`](#hasevent)
 * [`addEvent(...)`](#addevent)
 * [`updateEvent(...)`](#updateevent)
 * [`removeEvent(...)`](#removeevent)
 * [Type Aliases](#type-aliases)
+* [Enums](#enums)
 
 </docgen-index>
 
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+
+### requestAccess(...)
+
+```typescript
+requestAccess(options: { fullAccess?: boolean; }) => Promise<{ result: CalendarPermissionResult; }>
+```
+
+Request access to the calendar
+
+| Param         | Type                                   | Description   |
+| ------------- | -------------------------------------- | ------------- |
+| **`options`** | <code>{ fullAccess?: boolean; }</code> | Event options |
+
+**Returns:** <code>Promise&lt;{ result: <a href="#calendarpermissionresult">CalendarPermissionResult</a>; }&gt;</code>
+
+--------------------
+
+
+### hasAccess(...)
+
+```typescript
+hasAccess(options: { fullAccess?: boolean; }) => Promise<{ result: CalendarPermissionResult; }>
+```
+
+Returns access level
+
+| Param         | Type                                   | Description   |
+| ------------- | -------------------------------------- | ------------- |
+| **`options`** | <code>{ fullAccess?: boolean; }</code> | Event options |
+
+**Returns:** <code>Promise&lt;{ result: <a href="#calendarpermissionresult">CalendarPermissionResult</a>; }&gt;</code>
+
+--------------------
+
 
 ### hasEvent(...)
 
@@ -133,7 +170,7 @@ Removes an event by its id
 
 #### CalendarCreateEventOptions
 
-<code><a href="#calendareventoptions">CalendarEventOptions</a> & { title: string; startDate: number; }</code>
+<code><a href="#calendareventoptions">CalendarEventOptions</a> & { title: string; startDate: number; fullAccess?: boolean; }</code>
 
 
 #### CalendarEventOptions
@@ -144,5 +181,18 @@ Removes an event by its id
 #### CalendarUpdateEventOptions
 
 <code><a href="#calendareventoptions">CalendarEventOptions</a> & { id: string; }</code>
+
+
+### Enums
+
+
+#### CalendarPermissionResult
+
+| Members             | Value          |
+| ------------------- | -------------- |
+| **`NotDetermined`** | <code>0</code> |
+| **`Authorized`**    | <code>1</code> |
+| **`Restricted`**    | <code>2</code> |
+| **`Denied`**        | <code>3</code> |
 
 </docgen-api>

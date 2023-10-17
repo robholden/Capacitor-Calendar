@@ -48,6 +48,33 @@ public class CalendarPlugin extends Plugin
         }
     }
 
+    @PermissionCallback
+    private void calendarHasPermsCallback(PluginCall call)
+    {
+        hasAccess(call);
+    }
+
+    @PluginMethod
+    public void requestAccess(PluginCall call)
+    {
+        requestPermissionForAlias("calendar", call, "calendarHasPermsCallback");
+    }
+
+    @PluginMethod
+    public void hasAccess(PluginCall call)
+    {
+        var state = getPermissionState("calendar");
+        var result = CalendarPermissionResult.NotDetermined;
+        switch (state) {
+            case GRANTED -> result = CalendarPermissionResult.Authorized;
+            case DENIED -> result = CalendarPermissionResult.Denied;
+            case PROMPT, PROMPT_WITH_RATIONALE -> result = CalendarPermissionResult.Restricted;
+        }
+        JSObject ret = new JSObject();
+        ret.put("result", result);
+        call.resolve(ret);
+    }
+
     @PluginMethod
     public void hasEvent(PluginCall call)
     {
